@@ -1,0 +1,23 @@
+<!-- index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/stylesIndex.css" />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <h1>Home Page</h1>
+    <% if (messages && messages.length > 0) { %>
+    <div class="error-messages">
+      <% messages.forEach(function(message) { %>
+      <p style="color: red"><%= message %></p>
+      <% }) %>
+    </div>
+    <% } %>
+    <div class="links-container">
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    </div>
+  </body>
+</html>
