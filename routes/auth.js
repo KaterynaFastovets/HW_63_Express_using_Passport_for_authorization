@@ -4,12 +4,12 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require("../models/User");
 
-// Registration 
+// Registration
 router.get("/register", (req, res) => {
   res.render("register");
 });
 
- router.post("/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const { email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
@@ -23,7 +23,7 @@ router.get("/register", (req, res) => {
 
     const newUser = new User({
       email,
-      password: hashedPassword, 
+      password: hashedPassword,
     });
     await newUser.save();
 
@@ -36,12 +36,11 @@ router.get("/register", (req, res) => {
   }
 });
 
-// Login 
+// Login
 router.get("/login", (req, res) => {
   const flashMessages = req.flash("error");
   res.render("login", { messages: flashMessages });
 });
-
 
 router.post(
   "/login",
@@ -64,9 +63,11 @@ router.get("/logout", (req, res, next) => {
   });
 });
 
+
+
 router.get("/dashboard", (req, res) => {
   if (!req.isAuthenticated()) {
-    return res.redirect("/login"); 
+    return res.redirect("/login");
   }
   res.render("dashboard");
 });
