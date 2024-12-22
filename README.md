@@ -26,7 +26,7 @@ PORT=3010
 
 ### **4.** After setting the environment variables, start the server:
 
-`node index.js`
+`node app.js`
 
 ### **5.** This project includes:
 
