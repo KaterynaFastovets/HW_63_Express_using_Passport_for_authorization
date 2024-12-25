@@ -1,17 +1,16 @@
 require("dotenv").config();
 const express = require("express");
-const session = require("express-session");
 const flash = require("connect-flash");
-const passport = require("passport");
 const mongoose = require("mongoose");
-const authRoutes = require("./routes/auth");
-const protectedRoutes = require("./routes/protected");
 const path = require("path");
 const favicon = require("serve-favicon");
+const userRoutes = require("./routes/users");
+
 
 process.noDeprecation = true;
 
 const app = express();
+const PORT = 3000;
 
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -20,33 +19,12 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+
 app.use(flash());
 
-
-app.use(
-  session({
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
-  })
-);
-
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use((req, res, next) => {
-  res.locals.success_messages = req.flash("success");
-  res.locals.error_messages = req.flash("error");
-  next();
-});
-
-app.set("view engine", "ejs");
 
 // MongoDB connection
 const mongoUri = process.env.MONGO_DB 
@@ -61,36 +39,15 @@ mongoose
   });
 
 
-app.use("/", authRoutes); 
-app.use("/", protectedRoutes); 
+// Routes
+app.use('/users', userRoutes);
 
-// Home page
-app.get("/", (req, res) => {
-  const flashMessages = req.flash("error"); 
-  res.render("index", { messages: flashMessages });
-  req.flash("error", ""); 
-});
-
-// Error handling 
-app.use((req, res, next) => {
-  res.status(404).send("Not Found");
-});
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
-});
-
-app.get("/dashboard", (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect("/login"); 
-  }
-  res.render("dashboard");
-  
+// Root Route
+app.get('/', (req, res) => {
+    res.redirect('/users');
 });
 
 
-const PORT = process.env.PORT || 3010;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
