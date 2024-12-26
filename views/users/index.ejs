@@ -1,39 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Users List</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
     <h1>Users List</h1>
-    <p>Average Age: <%= averageAge %></p>  
+    <p>Average Age: <%= averageAge %></p>
 
     <a href="/users/add" class="button">Add New User</a>
-    
+
     <ul>
-        <% users.forEach(user => { %>
-            <li class="user-item">
-                Name: <%= user.name %>, Email: <%= user.email %>, Age: <%= user.age %>
-                <form action="/users/edit/<%= user._id %>" method="GET" style="display:inline;">
-                    <button type="submit" class="edit-button">Edit</button>
-                </form>
-                <form action="/users/delete/<%= user._id %>" method="POST" style="display:inline;">
-                    <button type="submit" class="delete-button">Delete</button>
-                </form>
-            </li>
-        <% }) %>
+      <% users.forEach(user => { %>
+
+      <li class="user-item">
+        Name: <%= user.name %>, Email: <%= user.email %>, Age: <%= user.age %>
+        <div>
+          <form
+            action="/users/edit/<%= user._id %>"
+            method="GET"
+            style="display: inline"
+          >
+            <button type="submit" class="edit-button">Edit</button>
+          </form>
+          <form
+            action="/users/delete/<%= user._id %>"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit" class="delete-button">Delete</button>
+          </form>
+        </div>
+      </li>
+      <% }) %>
     </ul>
 
     <div class="pagination">
-        <% if (currentPage > 1) { %>
-            <a href="/users?page=<%= currentPage - 1 %>">Previous</a>
-        <% } %>
-        <span>Page <%= currentPage %> of <%= totalPages %></span>
-        <% if (currentPage < totalPages) { %>
-            <a href="/users?page=<%= currentPage + 1 %>">Next</a>
-        <% } %>
+      <% if (currentPage > 1) { %>
+      <a href="/users?page=<%= currentPage - 1 %>">Previous</a>
+      <% } %>
+      <span>Page <%= currentPage %> of <%= totalPages %></span>
+      <% if (currentPage < totalPages) { %>
+      <a href="/users?page=<%= currentPage + 1 %>">Next</a>
+      <% } %>
     </div>
-</body>
+  </body>
 </html>
